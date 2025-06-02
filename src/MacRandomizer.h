@@ -1,4 +1,3 @@
-//Minhaj Uddin Hassan
 #ifndef MAC_RANDOMIZER_H
 #define MAC_RANDOMIZER_H
 

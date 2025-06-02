@@ -1,4 +1,5 @@
 #include "MacRandomizer.h"
+#include <WiFi.h> // Include WiFi.h for WiFi functions
 #if defined(ESP32)
   #include <Preferences.h>
 #elif defined(ESP8266)
@@ -8,9 +9,10 @@
 MacRandomizer::MacRandomizer() {
   // Initialize factory MAC
   #if defined(ESP32)
-    WiFi.mode(WIFI_STA);
-    esp_wifi_get_mac(WIFI_IF_STA, factoryMac);
+    WiFi.mode(WIFI_STA); // Set WiFi to station mode
+    esp_wifi_get_mac(WIFI_IF_STA, factoryMac); // Use WIFI_IF_STA for ESP32
   #elif defined(ESP8266)
+    WiFi.mode(WIFI_STA); // Set WiFi to station mode
     wifi_get_macaddr(STATION_IF, factoryMac);
   #endif
 }

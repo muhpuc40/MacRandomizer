@@ -1,1 +1,4 @@
-MacRandomizer KEYWORD1 generateRandomMac KEYWORD2 setMacAddress KEYWORD2 getCurrentMac KEYWORD2
+MacRandomizer	KEYWORD1
+begin	KEYWORD2
+randomizeMAC	KEYWORD2
+getMACString	KEYWORD2

@@ -1,33 +1,54 @@
-# MacRandomizer Library
+# MacRandomizer
 
-A library for Arduino to randomize MAC addresses on IoT devices like ESP32 and ESP8266, enhancing security by preventing tracking.
+**MacRandomizer** is an Arduino library that allows you to easily generate and apply a randomized MAC address to your ESP32 WiFi interface, following IEEE standards for locally administered and unicast MAC addresses.
 
-## Features
-- Generate random, locally administered MAC addresses.
-- Set MAC addresses on supported devices.
-- Save/load MAC addresses to/from non-volatile storage.
-- Restore factory MAC address.
+---
 
-## Supported Platforms
-- ESP32
-- ESP8266
-- NodeMCU (using ESP32 or ESP8266)
+## 🚀 Features
 
-## Installation
-1. Download the library as a ZIP file from the GitHub repository.
-2. In the Arduino IDE, go to `Sketch > Include Library > Add .ZIP Library` and select the ZIP file.
-3. The library will appear under `Sketch > Include Library > MacRandomizer`.
+- ✅ Generates a valid random MAC address:
+  - Locally administered (bit 2 of first byte is set)
+  - Unicast (bit 1 of first byte is cleared)
+- ✅ Applies the MAC address before connecting to WiFi
+- ✅ Simple API to integrate with your Arduino/ESP32 project
+- ✅ Prints the new randomized MAC and current MAC in use
+- ✅ Lightweight and dependency-free (only depends on `WiFi.h` and `esp_wifi.h`)
 
-## Usage
-See the `examples/RandomizeMac` folder for a sample sketch.
+---
+
+## 🧠 Supported Platforms
+
+| Platform | Supported | Notes                      |
+|----------|-----------|----------------------------|
+| ESP32    | ✅ Yes     | Fully supported and tested |
+| ESP8266  | ❌ No      | Not yet implemented        |
+| AVR (UNO, Mega) | ❌ No | Not WiFi-capable          |
+
+> ⚠️ This library only works with **ESP32** and will not compile on generic Arduino boards.
+
+---
+
+## 📦 Installation
+
+### Option 1: Manual
+
+1. Download or clone this repository.
+2. Copy the `MacRandomizer` folder into your Arduino `libraries/` directory:
+   - e.g., `Documents/Arduino/libraries/MacRandomizer`
+3. Restart the Arduino IDE.
+
+### Option 2: ZIP File
+
+1. Download the ZIP file of this library.
+2. In Arduino IDE, go to:
+   - `Sketch` > `Include Library` > `Add .ZIP Library...`
+3. Select the downloaded ZIP file.
+
+---
+
+## 📘 Usage
+
+### Include the Library
 
 ```cpp
 #include <MacRandomizer.h>
-MacRandomizer macRandomizer;
-
-void setup() {
-  Serial.begin(115200);
-  uint8_t newMac[6];
-  macRandomizer.generateRandomMac(newMac);
-  macRandomizer.setMacAddress(newMac);
-}

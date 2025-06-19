@@ -1,5 +1,6 @@
 #include "MacRandomizer.h"
-#include <WiFi.h>  // For ESP32; adapt for other platforms if needed
+#include <WiFi.h>       // Required for WiFi functions
+#include <esp_wifi.h>   // Required for esp_wifi_set_mac()
 
 MacRandomizer::MacRandomizer() {}
 

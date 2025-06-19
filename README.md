@@ -2,8 +2,6 @@
 
 **MacRandomizer** is an Arduino library that allows you to easily generate and apply a randomized MAC address to your ESP32 WiFi interface, following IEEE standards for locally administered and unicast MAC addresses.
 
----
-
 ## 🚀 Features
 
 - ✅ Generates a valid random MAC address:
@@ -14,8 +12,6 @@
 - ✅ Prints the new randomized MAC and current MAC in use
 - ✅ Lightweight and dependency-free (only depends on `WiFi.h` and `esp_wifi.h`)
 
----
-
 ## 🧠 Supported Platforms
 
 | Platform | Supported | Notes                      |
@@ -25,8 +21,6 @@
 | AVR (UNO, Mega) | ❌ No | Not WiFi-capable          |
 
 > ⚠️ This library only works with **ESP32** and will not compile on generic Arduino boards.
-
----
 
 ## 📦 Installation
 
@@ -44,8 +38,6 @@
    - `Sketch` > `Include Library` > `Add .ZIP Library...`
 3. Select the downloaded ZIP file.
 
----
-
 ## 📘 Usage
 
 ### Include the Library
@@ -56,8 +48,8 @@
 
 MacRandomizer macRandom;
 
-const char* ssid = "YourSSID";
-const char* password = "YourPassword";
+const char* ssid = "YourSSID"; //WiFi Name
+const char* password = "YourPassword"; //WiFi Password
 
 void setup() {
   Serial.begin(115200);

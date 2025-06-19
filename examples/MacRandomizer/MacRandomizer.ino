@@ -3,8 +3,8 @@
 
 MacRandomizer macRandom;
 
-const char* ssid = "YourSSID";
-const char* password = "YourPassword";
+const char* ssid = "YourSSID"; //WiFi Name
+const char* password = "YourPassword"; //WiFi Password
 
 void setup() {
   Serial.begin(115200);

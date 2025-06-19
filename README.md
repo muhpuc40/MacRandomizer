@@ -51,4 +51,37 @@
 ### Include the Library
 
 ```cpp
+#include <WiFi.h>
 #include <MacRandomizer.h>
+
+MacRandomizer macRandom;
+
+const char* ssid = "YourSSID";
+const char* password = "YourPassword";
+
+void setup() {
+  Serial.begin(115200);
+  delay(1000);
+
+  // Step 1: Generate and set a random MAC address
+  macRandom.begin();
+
+  Serial.print("Randomized MAC: ");
+  Serial.println(macRandom.getMACString());
+
+  // Step 2: Connect to WiFi
+  WiFi.begin(ssid, password);
+  Serial.print("Connecting to WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+
+  Serial.println("\nConnected!");
+  Serial.print("MAC in use: ");
+  Serial.println(WiFi.macAddress());
+}
+
+void loop() {
+  // Your code here
+}

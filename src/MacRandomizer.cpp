@@ -1,25 +1,17 @@
 #include "MacRandomizer.h"
-#include <WiFi.h>       // Required for WiFi functions
-#include <esp_wifi.h>   // Required for esp_wifi_set_mac()
+#include <WiFi.h>
+#include <esp_wifi.h>
 
 MacRandomizer::MacRandomizer() {}
 
 void MacRandomizer::begin() {
     generateRandomMAC();
 
-    // Completely disable WiFi first
-    WiFi.disconnect(true, true); // erase old config
-    WiFi.mode(WIFI_OFF);
-    delay(100);
-
-    // Now set new MAC
-    esp_wifi_set_mac(WIFI_IF_STA, newMAC);
-
-    // Now re-enable WiFi
     WiFi.mode(WIFI_STA);
     delay(100);
+    esp_wifi_set_mac(WIFI_IF_STA, newMAC);
+    delay(100);
 }
-
 
 void MacRandomizer::randomizeMAC() {
     generateRandomMAC();
@@ -34,7 +26,7 @@ String MacRandomizer::getMACString() const {
 }
 
 void MacRandomizer::generateRandomMAC() {
-    newMAC[0] = 0x02;  // Locally administered & unicast
+    newMAC[0] = 0x02;  // Locally administered, unicast
     for (int i = 1; i < 6; ++i) {
         newMAC[i] = random(0, 256);
     }

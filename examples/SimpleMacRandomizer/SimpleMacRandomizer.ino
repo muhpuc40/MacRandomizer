@@ -10,13 +10,11 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  // Set random MAC address BEFORE WiFi starts
-  macRandom.begin();
+  macRandom.begin();  // Set random MAC
 
-  Serial.print("Randomized MAC set to: ");
+  Serial.print("Randomized MAC: ");
   Serial.println(macRandom.getMACString());
 
-  // Connect to WiFi
   WiFi.begin(ssid, password);
   Serial.print("Connecting to WiFi");
   while (WiFi.status() != WL_CONNECTED) {
@@ -25,10 +23,8 @@ void setup() {
   }
   Serial.println("\nConnected!");
 
-  Serial.print("Effective MAC Address: ");
-  Serial.println(WiFi.macAddress());  // Should match randomized one
+  Serial.print("MAC in use: ");
+  Serial.println(WiFi.macAddress());
 }
 
-void loop() {
-  // Optional: Do other stuff
-}
+void loop() {}

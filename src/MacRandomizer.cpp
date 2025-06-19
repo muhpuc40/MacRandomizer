@@ -17,6 +17,7 @@ void MacRandomizer::begin() {
 
     // Now re-enable WiFi
     WiFi.mode(WIFI_STA);
+    delay(100);
 }
 
 

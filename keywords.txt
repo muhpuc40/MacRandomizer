@@ -1,7 +1,1 @@
-MacRandomizer	KEYWORD1
-generateRandomMac	KEYWORD2
-setMacAddress	KEYWORD2
-saveMacAddress	KEYWORD2
-loadMacAddress	KEYWORD2
-restoreFactoryMac	KEYWORD2
-getCurrentMac	KEYWORD2
+MacRandomizer KEYWORD1 generateRandomMac KEYWORD2 setMacAddress KEYWORD2 getCurrentMac KEYWORD2

@@ -1,89 +1,69 @@
 #include "MacRandomizer.h"
-#include <WiFi.h> // Include WiFi.h for WiFi functions
-#if defined(ESP32)
-  #include <Preferences.h>
-#elif defined(ESP8266)
-  #include <EEPROM.h>
-#endif
 
 MacRandomizer::MacRandomizer() {
-  // Initialize factory MAC
+  Serial.println("Initializing MacRandomizer...");
+  randomSeed(analogRead(0)); // Seed random number generator
+  WiFi.mode(WIFI_STA);
+  delay(500); // Stabilize WiFi stack
   #if defined(ESP32)
-    WiFi.mode(WIFI_STA); // Set WiFi to station mode
-    esp_wifi_get_mac(WIFI_IF_STA, factoryMac); // Use WIFI_IF_STA for ESP32
+    esp_wifi_get_mac(WIFI_IF_STA, factoryMac);
   #elif defined(ESP8266)
-    WiFi.mode(WIFI_STA); // Set WiFi to station mode
     wifi_get_macaddr(STATION_IF, factoryMac);
   #endif
+  Serial.print("Factory MAC: ");
+  for (int i = 0; i < 6; i++) {
+    Serial.printf("%02X", factoryMac[i]);
+    if (i < 5) Serial.print(":");
+  }
+  Serial.println();
 }
 
 bool MacRandomizer::generateRandomMac(uint8_t* mac) {
-  // Generate random bytes
+  Serial.println("Generating random MAC...");
   for (int i = 0; i < 6; i++) {
     mac[i] = random(0, 256);
   }
-  // Set locally administered bit (bit 1 of first byte = 1)
-  mac[0] |= 0x02;
-  // Clear multicast bit (bit 0 of first byte = 0)
-  mac[0] &= ~0x01;
+  mac[0] |= 0x02; // Set locally administered bit
+  mac[0] &= ~0x01; // Clear multicast bit
+  Serial.print("Generated MAC: ");
+  for (int i = 0; i < 6; i++) {
+    Serial.printf("%02X", mac[i]);
+    if (i < 5) Serial.print(":");
+  }
+  Serial.println();
   return true;
 }
 
 bool MacRandomizer::setMacAddress(uint8_t* mac) {
+  Serial.println("Attempting to set MAC address...");
+  WiFi.mode(WIFI_STA); // Ensure station mode
+  delay(500); // Prevent crashes
   #if defined(ESP32)
     esp_err_t err = esp_wifi_set_mac(WIFI_IF_STA, mac);
-    return (err == ESP_OK);
-  #elif defined(ESP8266)
-    return wifi_set_macaddr(STATION_IF, mac);
-  #else
-    return false; // Unsupported platform
-  #endif
-}
-
-bool MacRandomizer::saveMacAddress(uint8_t* mac) {
-  #if defined(ESP32)
-    Preferences preferences;
-    preferences.begin("mac", false);
-    bool success = preferences.putBytes("mac_addr", mac, 6) == 6;
-    preferences.end();
-    return success;
-  #elif defined(ESP8266)
-    EEPROM.begin(512);
-    for (int i = 0; i < 6; i++) {
-      EEPROM.write(i, mac[i]);
+    if (err != ESP_OK) {
+      Serial.printf("Failed to set MAC address, error code: %d\n", err);
+      return false;
     }
-    bool success = EEPROM.commit();
-    EEPROM.end();
-    return success;
-  #else
-    return false; // Unsupported platform
-  #endif
-}
-
-bool MacRandomizer::loadMacAddress(uint8_t* mac) {
-  #if defined(ESP32)
-    Preferences preferences;
-    preferences.begin("mac", true);
-    bool success = preferences.getBytes("mac_addr", mac, 6) == 6;
-    preferences.end();
-    return success;
+    Serial.println("MAC address set successfully on ESP32");
+    return true;
   #elif defined(ESP8266)
-    EEPROM.begin(512);
-    for (int i = 0; i < 6; i++) {
-      mac[i] = EEPROM.read(i);
+    bool result = wifi_set_macaddr(STATION_IF, mac);
+    if (!result) {
+      Serial.println("Failed to set MAC address on ESP8266");
+      return false;
     }
-    EEPROM.end();
+    Serial.println("MAC address set successfully on ESP8266");
     return true;
   #else
-    return false; // Unsupported platform
+    Serial.println("Unsupported platform for MAC address setting");
+    return false;
   #endif
-}
-
-bool MacRandomizer::restoreFactoryMac() {
-  return setMacAddress(factoryMac);
 }
 
 void MacRandomizer::getCurrentMac(uint8_t* mac) {
+  Serial.println("Getting current MAC...");
+  WiFi.mode(WIFI_STA);
+  delay(500);
   #if defined(ESP32)
     esp_wifi_get_mac(WIFI_IF_STA, mac);
   #elif defined(ESP8266)

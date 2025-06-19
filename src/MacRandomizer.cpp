@@ -6,10 +6,19 @@ MacRandomizer::MacRandomizer() {}
 
 void MacRandomizer::begin() {
     generateRandomMAC();
-    WiFi.mode(WIFI_STA);
-    WiFi.disconnect(true);  // Reset WiFi before setting MAC
+
+    // Completely disable WiFi first
+    WiFi.disconnect(true, true); // erase old config
+    WiFi.mode(WIFI_OFF);
+    delay(100);
+
+    // Now set new MAC
     esp_wifi_set_mac(WIFI_IF_STA, newMAC);
+
+    // Now re-enable WiFi
+    WiFi.mode(WIFI_STA);
 }
+
 
 void MacRandomizer::randomizeMAC() {
     generateRandomMAC();
